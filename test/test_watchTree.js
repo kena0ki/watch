@@ -21,3 +21,16 @@ watch.watchTree(__dirname, { filter: isDirOrQ }, function (f, curr, prev) {
     watch.unwatchTree(__dirname);
   }
 });
+
+watch.watchTree(__dirname, { ignoreDirectoryPattern: /d\/d/ }, function (f, curr, prev) {
+  if (typeof f == 'object' && prev === null && curr === null) {
+    Object.keys(f).forEach(function(name) {
+      console.log(name);
+      assert(!/d\/d/.test(name));
+    });
+
+    // If the process never exits then `unwatchTree` failed to unwatch all
+    // the files.
+    watch.unwatchTree(__dirname);
+  }
+});
